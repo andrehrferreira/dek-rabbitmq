@@ -1,6 +1,6 @@
 {
     "name": "@dekproject/rabbitmq",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "RabbitMQ interface plugin for DEK",
     "main": "index.js",
     "scripts": {
