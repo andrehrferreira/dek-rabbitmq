@@ -12,15 +12,7 @@ What does this plugin do?
 To install the bootstrap we recommend using the CLI
 
 ```bash
-$ npm i -g @dekproject/cli
-$ dek install rabbitmq
-```
-
-or
-
-```bash
-$ npm i @dekproject/rabbitmq @dekproject/scope
-$ nano .env
+$ yarn add @dekproject/rabbitmq --save
 ```
 
 In the .env file add the following settings
@@ -31,39 +23,6 @@ RABBITMQ_PORT=5672
 ```
 
 ## Usage
-
-Using direct
-
-```bash
-$ npm i @dekproject/scope
-```
-
-```js
-import dotenv from "dotenv";
-import { $, plugins, rabbitmq } from "@dekproject/scope";
-
-(async () => {
-    dotenv.config({ path: "./.env" });
-    await plugins("");
-
-    const PORT = process.env.PORT || 5555;
-
-    $.wait("rabbitmq").then(() => {
-        console.log("Connected");
-
-        rabbitmq.createChannel((err, ch) => {
-            var q = 'hello';
-            var msg = 'Hello World 123!';
-            ch.assertQueue(q, { durable: false });
-            ch.sendToQueue(q, new Buffer(msg));
-            console.log(" [x] Sent %s", msg);
-        });
-    }).catch((e) => {
-        console.log("The wait timeout was reached without loading the dependencies");
-        process.exit(-1);
-    });
-})();
-```
 
 Using in the standard DEK skeleton
 
