@@ -1,13 +1,11 @@
 {
     "name": "@dekproject/rabbitmq",
-    "version": "1.0.1",
+    "version": "1.1.1",
     "description": "RabbitMQ interface plugin for DEK",
     "main": "index.js",
     "scripts": {
-        "sample": "babel-node sample.js --presets env",
         "build": "babel src -s -D -d build --presets env",
-        "dev": "babel-node src --presets env",
-        "start": "node build"
+        "dev": "npm run build && babel-node sample --presets env"
     },
     "repository": {
         "type": "git",
@@ -20,12 +18,12 @@
     },
     "homepage": "https://github.com/dekproject/rabbitmq#readme",
     "dependencies": {
-        "@babel/polyfill": "^7.4.4",
-        "@dekproject/scope": "^1.1.3",
-        "amqplib": "^0.5.3",
-        "dotenv": "^8.0.0"
+        "amqplib": "^0.5.3"
     },
     "devDependencies": {
+        "dotenv": "^8.0.0",
+        "@babel/polyfill": "^7.4.4",
+        "@dekproject/scope": "^1.1.3",
         "babel-cli": "^6.26.0",
         "babel-preset-env": "^1.7.0"
     }
