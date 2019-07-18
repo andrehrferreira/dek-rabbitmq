@@ -28,15 +28,28 @@ export default () => {
         }
         else {
             try {
-                rabbitmq.connect(`amqp://${dbConfig['RABBITMQ_HOST']}:${dbConfig['RABBITMQ_PORT']}`, (err, conn) => {
-                    if(err) console.log(`[ RabbitMQ ] - ${err}`);
-                    else{
-                        if(process.env.DEBUG == 'true')
-                            console.log(`[ RabbitMQ ] - RabbitMQ successfully signed`);
+                if(env.hasOwnProperty('RABBITMQ_URI')){
+                    rabbitmq.connect(`amqp://${env['RABBITMQ_URI']}`, (err, conn) => {
+                        if(err) console.log(`[ RabbitMQ ] - ${err}`);
+                        else{
+                            if(process.env.DEBUG == 'true')
+                                console.log(`[ RabbitMQ ] - RabbitMQ successfully signed`);
 
-                        $.set("rabbitmq", conn);
-                    }
-                });
+                            $.set("rabbitmq", conn);
+                        }
+                    });
+                }
+                else{
+                    rabbitmq.connect(`amqp://${dbConfig['RABBITMQ_HOST']}:${dbConfig['RABBITMQ_PORT']}`, (err, conn) => {
+                        if(err) console.log(`[ RabbitMQ ] - ${err}`);
+                        else{
+                            if(process.env.DEBUG == 'true')
+                                console.log(`[ RabbitMQ ] - RabbitMQ successfully signed`);
+
+                            $.set("rabbitmq", conn);
+                        }
+                    });
+                }
             }
             catch (e) {
                 console.log(`[ RabbitMQ ] - ${e.message}`);
