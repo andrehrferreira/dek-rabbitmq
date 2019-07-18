@@ -35,9 +35,11 @@ exports.default = function () {
         } else {
             try {
                 _callback_api2.default.connect('amqp://' + dbConfig['RABBITMQ_HOST'] + ':' + dbConfig['RABBITMQ_PORT'], function (err, conn) {
-                    if (process.env.DEBUG == 'true') console.log('[ RabbitMQ ] - RabbitMQ successfully signed');
+                    if (err) console.log('[ RabbitMQ ] - ' + err);else {
+                        if (process.env.DEBUG == 'true') console.log('[ RabbitMQ ] - RabbitMQ successfully signed');
 
-                    _scope.$.set("rabbitmq", conn);
+                        _scope.$.set("rabbitmq", conn);
+                    }
                 });
             } catch (e) {
                 console.log('[ RabbitMQ ] - ' + e.message);

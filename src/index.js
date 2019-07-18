@@ -29,10 +29,13 @@ export default () => {
         else {
             try {
                 rabbitmq.connect(`amqp://${dbConfig['RABBITMQ_HOST']}:${dbConfig['RABBITMQ_PORT']}`, (err, conn) => {
-                    if(process.env.DEBUG == 'true')
-                        console.log(`[ RabbitMQ ] - RabbitMQ successfully signed`);
+                    if(err) console.log(`[ RabbitMQ ] - ${err}`);
+                    else{
+                        if(process.env.DEBUG == 'true')
+                            console.log(`[ RabbitMQ ] - RabbitMQ successfully signed`);
 
-                    $.set("rabbitmq", conn);
+                        $.set("rabbitmq", conn);
+                    }
                 });
             }
             catch (e) {
