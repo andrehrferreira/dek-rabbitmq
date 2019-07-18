@@ -19,14 +19,18 @@ exports.default = function () {
         var authUrl = null;
         var configApproved = true;
 
-        if (env.hasOwnProperty('RABBITMQ_HOST') && !!env.RABBITMQ_HOST) dbConfig['RABBITMQ_HOST'] = env.RABBITMQ_HOST;else {
-            configApproved = false;
-            console.log('[ RabbitMQ ] - There is no RABBITMQ_HOST variable in the .env file.');
-        }
+        if (!env.hasOwnProperty('RABBITMQ_URI')) {
+            if (env.hasOwnProperty('RABBITMQ_HOST') && !!env.RABBITMQ_HOST) dbConfig['RABBITMQ_HOST'] = env.RABBITMQ_HOST;else {
+                configApproved = false;
+                console.log('[ RabbitMQ ] - There is no RABBITMQ_HOST variable in the .env file.');
+            }
 
-        if (env.hasOwnProperty('RABBITMQ_PORT') && !!env.RABBITMQ_PORT) dbConfig['RABBITMQ_PORT'] = env.RABBITMQ_PORT;else {
-            configApproved = false;
-            console.log('[ RabbitMQ ] - There is no RABBITMQ_PORT variable in the .env file.');
+            if (env.hasOwnProperty('RABBITMQ_PORT') && !!env.RABBITMQ_PORT) dbConfig['RABBITMQ_PORT'] = env.RABBITMQ_PORT;else {
+                configApproved = false;
+                console.log('[ RabbitMQ ] - There is no RABBITMQ_PORT variable in the .env file.');
+            }
+        } else {
+            configApproved = true;
         }
 
         if (!configApproved) {
