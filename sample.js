@@ -6,17 +6,17 @@ import { $, plugins, rabbitmq } from "@dekproject/scope";
     await plugins("");
 
     $.wait("rabbitmq").then(() => {
-        console.log("Connected");
+        //console.log("Connected");
 
         rabbitmq.createChannel((err, ch) => {
-            var q = 'hello';
-            var msg = 'Hello World 123!';
+            var q = "hello";
+            var msg = "Hello World 123!";
             ch.assertQueue(q, { durable: false });
             ch.sendToQueue(q, Buffer.from(msg));
-            console.log(" [x] Sent %s", msg);
+            //console.log(" [x] Sent %s", msg);
         });
-    }).catch((e) => {
-        console.log("The wait timeout was reached without loading the dependencies");
+    }).catch((err) => {
+        console.log(err);
         process.exit(-1);
     });
 })();
