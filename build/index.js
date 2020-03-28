@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _scope = require("@dekproject/scope");
 
-var _callback_api = require("amqplib/callback_api");
+var _amqplib = require("amqplib");
 
-var _callback_api2 = _interopRequireDefault(_callback_api);
+var _amqplib2 = _interopRequireDefault(_amqplib);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38,20 +38,20 @@ exports.default = function () {
         } else {
             try {
                 if (env.hasOwnProperty("RABBITMQ_URI")) {
-                    _callback_api2.default.connect("amqp://" + env["RABBITMQ_URI"], function (err, conn) {
-                        if (err) console.log("[ RabbitMQ ] - " + err);else {
-                            if (process.env.DEBUG == "true") console.log("[ RabbitMQ ] - RabbitMQ successfully signed");
+                    _amqplib2.default.connect("amqp://" + env["RABBITMQ_URI"]).then(function (conn) {
+                        if (process.env.DEBUG == "true") console.log("[ RabbitMQ ] - RabbitMQ successfully signed");
 
-                            _scope.$.set("rabbitmq", conn);
-                        }
+                        _scope.$.set("rabbitmq", conn);
+                    }).catch(function (err) {
+                        console.log("[ RabbitMQ ] - " + err);
                     });
                 } else {
-                    _callback_api2.default.connect("amqp://" + dbConfig["RABBITMQ_HOST"] + ":" + dbConfig["RABBITMQ_PORT"], function (err, conn) {
-                        if (err) console.log("[ RabbitMQ ] - " + err);else {
-                            if (process.env.DEBUG == "true") console.log("[ RabbitMQ ] - RabbitMQ successfully signed");
+                    _amqplib2.default.connect("amqp://" + dbConfig["RABBITMQ_HOST"] + ":" + dbConfig["RABBITMQ_PORT"]).then(function (conn) {
+                        if (process.env.DEBUG == "true") console.log("[ RabbitMQ ] - RabbitMQ successfully signed");
 
-                            _scope.$.set("rabbitmq", conn);
-                        }
+                        _scope.$.set("rabbitmq", conn);
+                    }).catch(function (err) {
+                        console.log("[ RabbitMQ ] - " + err);
                     });
                 }
             } catch (e) {

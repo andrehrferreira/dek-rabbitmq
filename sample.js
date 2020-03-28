@@ -6,14 +6,18 @@ import { $, plugins, rabbitmq } from "@dekproject/scope";
     await plugins("");
 
     $.wait("rabbitmq").then(() => {
-        //console.log("Connected");
-
-        rabbitmq.createChannel((err, ch) => {
-            var q = "hello";
-            var msg = "Hello World 123!";
-            ch.assertQueue(q, { durable: false });
-            ch.sendToQueue(q, Buffer.from(msg));
-            //console.log(" [x] Sent %s", msg);
+        rabbitmq.createChannel().then((ch) => {
+            let ok = ch.assertQueue("hello", {durable: false});
+        
+            ok = ok.then(() => {
+                return ch.consume("hello", (msg) => {
+                    console.log(" [x] Received '%s'", msg.content.toString());
+                }, { noAck: true });
+            });
+        
+            return ok.then(() => {
+                console.log(" [*] Waiting for messages. To exit press CTRL+C");
+            });
         });
     }).catch((err) => {
         console.log(err);

@@ -1,5 +1,5 @@
 import { $ } from "@dekproject/scope";
-import rabbitmq from "amqplib/callback_api";
+import amqp from "amqplib";
 
 export default () => {
     try{
@@ -33,25 +33,23 @@ export default () => {
         else {
             try {
                 if(env.hasOwnProperty("RABBITMQ_URI")){
-                    rabbitmq.connect(`amqp://${env["RABBITMQ_URI"]}`, (err, conn) => {
-                        if(err) console.log(`[ RabbitMQ ] - ${err}`);
-                        else{
-                            if(process.env.DEBUG == "true")
-                                console.log("[ RabbitMQ ] - RabbitMQ successfully signed");
+                    amqp.connect(`amqp://${env["RABBITMQ_URI"]}`).then((conn) => {
+                        if(process.env.DEBUG == "true")
+                            console.log("[ RabbitMQ ] - RabbitMQ successfully signed");
 
-                            $.set("rabbitmq", conn);
-                        }
+                        $.set("rabbitmq", conn);                        
+                    }).catch((err) => {
+                        console.log(`[ RabbitMQ ] - ${err}`);
                     });
                 }
                 else{
-                    rabbitmq.connect(`amqp://${dbConfig["RABBITMQ_HOST"]}:${dbConfig["RABBITMQ_PORT"]}`, (err, conn) => {
-                        if(err) console.log(`[ RabbitMQ ] - ${err}`);
-                        else{
-                            if(process.env.DEBUG == "true")
-                                console.log("[ RabbitMQ ] - RabbitMQ successfully signed");
+                    amqp.connect(`amqp://${dbConfig["RABBITMQ_HOST"]}:${dbConfig["RABBITMQ_PORT"]}`).then((conn) => {
+                        if(process.env.DEBUG == "true")
+                            console.log("[ RabbitMQ ] - RabbitMQ successfully signed");
 
-                            $.set("rabbitmq", conn);
-                        }
+                        $.set("rabbitmq", conn);
+                    }).catch((err) => {
+                        console.log(`[ RabbitMQ ] - ${err}`);
                     });
                 }
             }
