@@ -38,20 +38,12 @@ exports.default = function () {
         } else {
             try {
                 if (env.hasOwnProperty("RABBITMQ_URI")) {
-                    _amqplib2.default.connect("amqp://" + env["RABBITMQ_URI"]).then(function (conn) {
-                        if (process.env.DEBUG == "true") console.log("[ RabbitMQ ] - RabbitMQ successfully signed");
-
-                        _scope.$.set("rabbitmq", conn);
-                    }).catch(function (err) {
-                        console.log("[ RabbitMQ ] - " + err);
+                    _scope.$.set("rabbitmq", function () {
+                        return _amqplib2.default.connect("amqp://" + env["RABBITMQ_URI"]);
                     });
                 } else {
-                    _amqplib2.default.connect("amqp://" + dbConfig["RABBITMQ_HOST"] + ":" + dbConfig["RABBITMQ_PORT"]).then(function (conn) {
-                        if (process.env.DEBUG == "true") console.log("[ RabbitMQ ] - RabbitMQ successfully signed");
-
-                        _scope.$.set("rabbitmq", conn);
-                    }).catch(function (err) {
-                        console.log("[ RabbitMQ ] - " + err);
+                    _scope.$.set("rabbitmq", function () {
+                        return _amqplib2.default.connect("amqp://" + dbConfig["RABBITMQ_HOST"] + ":" + dbConfig["RABBITMQ_PORT"]);
                     });
                 }
             } catch (e) {

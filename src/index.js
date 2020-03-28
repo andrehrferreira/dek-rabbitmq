@@ -33,23 +33,13 @@ export default () => {
         else {
             try {
                 if(env.hasOwnProperty("RABBITMQ_URI")){
-                    amqp.connect(`amqp://${env["RABBITMQ_URI"]}`).then((conn) => {
-                        if(process.env.DEBUG == "true")
-                            console.log("[ RabbitMQ ] - RabbitMQ successfully signed");
-
-                        $.set("rabbitmq", conn);                        
-                    }).catch((err) => {
-                        console.log(`[ RabbitMQ ] - ${err}`);
+                    $.set("rabbitmq", () => {
+                        return amqp.connect(`amqp://${env["RABBITMQ_URI"]}`);
                     });
                 }
                 else{
-                    amqp.connect(`amqp://${dbConfig["RABBITMQ_HOST"]}:${dbConfig["RABBITMQ_PORT"]}`).then((conn) => {
-                        if(process.env.DEBUG == "true")
-                            console.log("[ RabbitMQ ] - RabbitMQ successfully signed");
-
-                        $.set("rabbitmq", conn);
-                    }).catch((err) => {
-                        console.log(`[ RabbitMQ ] - ${err}`);
+                    $.set("rabbitmq", () => {
+                        return amqp.connect(`amqp://${dbConfig["RABBITMQ_HOST"]}:${dbConfig["RABBITMQ_PORT"]}`);
                     });
                 }
             }
