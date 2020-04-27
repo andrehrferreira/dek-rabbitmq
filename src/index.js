@@ -33,13 +33,13 @@ export default () => {
         else {
             try {
                 if(env.hasOwnProperty("RABBITMQ_URI")){
-                    $.set("rabbitmq", () => {
-                        return amqp.connect(`amqp://${env["RABBITMQ_URI"]}`);
+                    $.set("rabbitmq", (socketOptions) => {
+                        return amqp.connect(`amqp://${env["RABBITMQ_URI"]}`, socketOptions);
                     });
                 }
                 else{
-                    $.set("rabbitmq", () => {
-                        return amqp.connect(`amqp://${dbConfig["RABBITMQ_HOST"]}:${dbConfig["RABBITMQ_PORT"]}`);
+                    $.set("rabbitmq", (socketOptions) => {
+                        return amqp.connect(`amqp://${dbConfig["RABBITMQ_HOST"]}:${dbConfig["RABBITMQ_PORT"]}`, socketOptions);
                     });
                 }
             }

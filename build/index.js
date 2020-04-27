@@ -38,12 +38,12 @@ exports.default = function () {
         } else {
             try {
                 if (env.hasOwnProperty("RABBITMQ_URI")) {
-                    _scope.$.set("rabbitmq", function () {
-                        return _amqplib2.default.connect("amqp://" + env["RABBITMQ_URI"]);
+                    _scope.$.set("rabbitmq", function (socketOptions) {
+                        return _amqplib2.default.connect("amqp://" + env["RABBITMQ_URI"], socketOptions);
                     });
                 } else {
-                    _scope.$.set("rabbitmq", function () {
-                        return _amqplib2.default.connect("amqp://" + dbConfig["RABBITMQ_HOST"] + ":" + dbConfig["RABBITMQ_PORT"]);
+                    _scope.$.set("rabbitmq", function (socketOptions) {
+                        return _amqplib2.default.connect("amqp://" + dbConfig["RABBITMQ_HOST"] + ":" + dbConfig["RABBITMQ_PORT"], socketOptions);
                     });
                 }
             } catch (e) {
