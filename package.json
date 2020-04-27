@@ -1,11 +1,11 @@
 {
     "name": "@dekproject/rabbitmq",
-    "version": "1.5.1",
+    "version": "2.0.1",
     "description": "RabbitMQ interface plugin for DEK",
     "main": "./build/index.js",
     "scripts": {
-        "build": "babel src -s -D -d build --presets env",
-        "dev": "npm run build && babel-node sample --presets env",
+        "build": "babel src -s -D -d build",
+        "dev": "yarn build && node build/sample",
         "lint": "eslint '**/*.js'",
         "lint:fix": "eslint '**/*.js' --fix"
     },
@@ -25,16 +25,23 @@
         }
     },
     "dependencies": {
+        "amqp-connection-manager": "^3.2.0",
         "amqplib": "^0.5.5"
     },
     "devDependencies": {
-        "dotenv": "^8.2.0",
+        "@babel/cli": "^7.5.5",
+        "@babel/core": "^7.5.5",
+        "@babel/node": "^7.5.5",
         "@babel/polyfill": "^7.8.7",
-        "@dekproject/scope": "^2.0.1",
-        "babel-cli": "^6.26.0",
-        "babel-preset-env": "^1.7.0",
-        "babel-eslint": "~10.1.0",
-        "eslint": "~6.8.0",
-        "husky": "~4.2.3"
+        "@babel/preset-env": "^7.5.5",
+        "@babel/register": "^7.5.5",
+        "@dekproject/scope": "^2.2.1",
+        "babel-eslint": "^10.0.3",
+        "dotenv": "^6.2.0",
+        "eslint": "^6.8.0",
+        "husky": "^4.2.3",
+        "mocha": "^6.0.1",
+        "temp": "^0.9.1",
+        "webpack": "^4.43.0"
     }
 }

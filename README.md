@@ -30,21 +30,34 @@ Using in the standard DEK skeleton
 import { $, rabbitmq } from "@dekproject/scope";
 
 $.wait("rabbitmq").then(() => {
-    rabbitmq().then(function(conn) {
-        conn.createChannel().then((ch) => {
-            let ok = ch.assertQueue("hello", {durable: false});
-        
-            ok = ok.then(() => {
-                return ch.consume("hello", (msg) => {
-                    console.log(" [x] Received '%s'", msg.content.toString());
-                }, { noAck: true });
-            });
-        
-            return ok.then(() => {
-                console.log(" [*] Waiting for messages. To exit press CTRL+C");
-            });
-        });    
+    let connection = rabbitmq();
+
+    connection.on("connect", () => {
+        console.log("Connected!");
     });
+    
+    connection.on("disconnect", () => {
+        console.log("Disconnected.");
+    });
+
+    let channelWrapper = connection.createChannel({
+        json: true,
+        setup: (channel) => {
+            return Promise.all([
+                channel.assertQueue("hello", { exclusive: true, autoDelete: true }),
+                channel.prefetch(1),
+                channel.consume("hello", (msg) => {
+                    console.log(" [x] Received '%s'", msg.content.toString());
+                    channelWrapper.ack(msg);
+                }, { noAck: true })
+            ]);
+        }
+    });
+
+    channelWrapper.waitForConnect().then(() => {
+        console.log("Listening for messages");
+        channelWrapper.sendToQueue("hello", { hello: "world" });
+    });     
 }).catch((err) => {
     console.log(err);
     process.exit(-1);

@@ -1,5 +1,7 @@
+import "@babel/polyfill/noConflict";
+
 import { $ } from "@dekproject/scope";
-import amqp from "amqplib";
+const amqp = require("amqp-connection-manager");
 
 export default () => {
     try{
@@ -34,12 +36,12 @@ export default () => {
             try {
                 if(env.hasOwnProperty("RABBITMQ_URI")){
                     $.set("rabbitmq", (socketOptions) => {
-                        return amqp.connect(`amqp://${env["RABBITMQ_URI"]}`, socketOptions);
+                        return amqp.connect([`amqp://${env["RABBITMQ_URI"]}`], socketOptions);
                     });
                 }
                 else{
                     $.set("rabbitmq", (socketOptions) => {
-                        return amqp.connect(`amqp://${dbConfig["RABBITMQ_HOST"]}:${dbConfig["RABBITMQ_PORT"]}`, socketOptions);
+                        return amqp.connect([`amqp://${dbConfig["RABBITMQ_HOST"]}:${dbConfig["RABBITMQ_PORT"]}`], socketOptions);
                     });
                 }
             }
