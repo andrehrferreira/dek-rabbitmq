@@ -48,8 +48,8 @@ $.wait("rabbitmq").then(() => {
                 channel.prefetch(1),
                 channel.consume("hello", (msg) => {
                     console.log(" [x] Received '%s'", msg.content.toString());
-                    channelWrapper.ack(msg);
-                }, { noAck: true })
+                    channel.ack(msg);
+                }, { noAck: false })
             ]);
         }
     });

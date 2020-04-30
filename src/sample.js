@@ -26,7 +26,7 @@ import { $, plugins, rabbitmq } from "@dekproject/scope";
                     channel.prefetch(1),
                     channel.consume("hello", (msg) => {
                         console.log(" [x] Received '%s'", msg.content.toString());
-                        channelWrapper.ack(msg);
+                        channel.ack(msg);
                     }, { noAck: true })
                 ]);
             }
